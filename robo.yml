@@ -1,0 +1,15 @@
+
+run:
+  command: go build . && OPENCV_VIDEOIO_DEBUG=1 OPENCV_VIDEOCAPTURE_DEBUG=1 OPENCV_LOG_LEVEL=DEBUG OPENCV_VIDEOWRITER_DEBUG=1 ./watchbot
+
+install:
+  command: go install .
+
+test:
+  command: go test -race -v $(go list ./... | grep -v /vendor/)
+
+test-pkg:
+  command: go test -v github.com/marktheunissen/watchbot/pkg/${1} -run ${2}
+
+fonts-bindata:
+  command: go-bindata -o pkg/render/fonts.go -pkg render fonts/

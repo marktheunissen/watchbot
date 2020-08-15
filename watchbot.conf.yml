@@ -1,0 +1,110 @@
+# Location of sqlite db file.
+sqlite-db-file: ./motion.db
+sqlite-db-file: /var/watchbot/sqlite_motion.db
+
+# The ticker interval given in miliseconds, the rate will not be faster than this.
+frame-interval-ms: 200
+
+# Setup a check on healthchecks.io
+heartbeat-url: "https://hc-ping.com/{uuid}"
+
+# Set to true on systemd hosts (RPi), prevent double logging, or running in foreground.
+log-journal: false
+
+# Whether to output debug logs
+debug: false
+
+### Cameras
+
+# Axis notes
+# Gstreamer pipeline:
+# rtsp://user:pass@host:5454/axis-media/media.amp
+# protocols=tcp
+# NO videorate - doesn't work
+# crop-x: 250
+# crop-y: 0
+# crop-w: 720
+# crop-h: 720
+
+# Hikvision notes - on second stream 360p
+# rtsp://user:pass@host/Streaming/Channels/2
+# protocols=udp
+# videorate drop-only=true ! video/x-raw,framerate=5/1 ! appsink max-buffers=1 drop=true"
+# crop-x: 200
+# crop-y: 0
+# crop-w: 360
+# crop-h: 360
+
+# On old Hikvision, cannot use videorate either as it doesn't work.
+
+# Camera config
+camera0:
+  name: "Camera 0"
+  url: "rtspsrc protocols=tcp location=rtsp://user:pass@host:5454/axis-media/media.amp do-retransmission=false latency=0 drop-on-latency=true ! decodebin ! videoconvert ! appsink max-buffers=1 drop=true"
+  telegram-bot-token: "00000:aaaaa-bbbbb"
+  telegram-group-alert: "-00000000"
+  telegram-group-command: "-00000000"
+
+  # Crops the image before resampling it to the size required by the model,
+  # usually a square, use this to prevent distortion.
+  crop-x: 250
+  crop-y: 0
+  crop-w: 720
+  crop-h: 720
+
+  # ROI is relative to the crop region, not the original frame size. Boxes outside
+  # the ROI are rejected.
+  roi-x: 10
+  roi-y: 0
+  roi-w: 700
+  roi-h: 720
+
+  # Max width of the box allowed, larger are rejected.
+  max-width: 500
+
+  # Whether we require all boxes to be in portrait orientation (landscape is rejected).
+  require-portrait: false
+
+# camera1:
+  # ... etc, same as above
+
+## Detector config
+
+# The minimum required confidence to trigger a detection
+detect-min-confidence: 10
+
+# Which labels to alert on
+detect-alert-labels:
+  - "person"
+  - "car"
+  - "motorbike"
+  # - "tvmonitor"
+
+# The location of the model graph, it's size and complete set of detectable labels
+detect-graph-file: "/home/mark/Workarea/ncappzoo/caffe/SSD_MobileNet/graph"
+detect-graph-file: "/opt/graph-mobilenet-sdk-1.0/graph"
+
+detect-graph-width: 300
+detect-graph-height: 300
+detect-graph-labels:
+  - "background"
+  - "aeroplane"
+  - "bicycle"
+  - "bird"
+  - "boat"
+  - "bottle"
+  - "bus"
+  - "car"
+  - "cat"
+  - "chair"
+  - "cow"
+  - "dining table"
+  - "dog"
+  - "horse"
+  - "motorbike"
+  - "person"
+  - "potted plant"
+  - "sheep"
+  - "sofa"
+  - "train"
+  - "tvmonitor"
