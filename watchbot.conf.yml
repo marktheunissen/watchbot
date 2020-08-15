@@ -1,5 +1,4 @@
 # Location of sqlite db file.
-sqlite-db-file: ./motion.db
 sqlite-db-file: /var/watchbot/sqlite_motion.db
 
 # The ticker interval given in miliseconds, the rate will not be faster than this.
