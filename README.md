@@ -1,9 +1,9 @@
+![WatchBot Logo](https://raw.githubusercontent.com/marktheunissen/watchbot/master/images/watchbot-sml.jpg)
+
 ## Watchbot: AI on video streams
 
 - Uses [Movidius Neural Compute Stick](https://software.intel.com/content/www/us/en/develop/articles/intel-movidius-neural-compute-stick.html) plugged into a Raspberry Pi
 - If matching a label (e.g. person, dog, car), post the alert image to a Telegram channel
-
-![WatchBot Logo](https://raw.githubusercontent.com/marktheunissen/watchbot/master/images/watchbot-avatar-border.jpg)
 
 Other features:
 
